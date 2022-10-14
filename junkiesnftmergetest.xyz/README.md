@@ -1,3 +1,0 @@
-# Junkies NFT Test
-
-
