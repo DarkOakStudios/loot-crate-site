@@ -1,2 +1,2 @@
-# loot-crate-site
+Site located at junkiesnftmergetest.xyz
  
