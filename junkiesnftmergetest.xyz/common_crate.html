@@ -13,25 +13,25 @@
     </head>
 	<body onload="javascript:getTokens()">
 	<div id="container"></div>
-	<image id="item" src="LootCrateData/CommonLootCrate/common-outfit-text.png" style="position: absolute; top: 35%; right:70%;display:none; height:300px; width: auto"</image>
 	<video id="dropcrate" autoplay muted style="display:block">
 		<source src="/LootCrateVids/SelectCrate/Common/Common_Select_Animation.mp4" type="video/mp4">
 		</video>
 		<video id="common" style="display:none">
 		<source src="LootCrateVids/OpeningCrates/Common/common-outfit-case-opening.mp4" type="video/mp4">
 		</video>
-		<video id="uncommon" autoplay muted style="display:none">
-		<source src="/LootCrateVids/OpeningCrates/Uncommon/Loot_Crate_Uncommon_Animation.mp4" type="video/mp4">
+		<video id="uncommon" style="display:none">
+		<source src="LootCrateVids/OpeningCrates/Uncommon/uncommon-outfit-case-opening.mp4" type="video/mp4">
 		</video>
-		<video id="rare" autoplay muted style="display:none">
-		<source src="/LootCrateVids/OutfitReveal/common-outfit-case-opening.mp4" type="video/mp4">
+		<video id="rare" style="display:none">
+		<source src="LootCrateVids/OpeningCrates/Rare/rare-outfit-case-opening.mp4" type="video/mp4">
 		</video>
-		<video id="epic" autoplay muted style="display:none">
+		<video id="epic" style="display:none">
 		<source src="" type="video/mp4">
 		</video>
 		<video id="loop2" loop style="display:none">
 		<source src="" type="video/mp4">
 		</video>
+	<image id="item" src="" style="position: absolute; top: 35%; right:70%;display:none; height:300px; width: auto"</image>
 	<a href="javascript:receiveContents()" class="blockchainwhite" style="position: absolute; right: 46%; top: 70%; display: none">Open Crate</a>
 	<button id="modal" style="font-size:50px; position: absolute; right: 46%; top: 5%;" onclick="document.getElementById('keys').style.display='block'"
 	class="w3-button">Keys</button>
@@ -50,7 +50,7 @@
 	</body>
 	<script src='https://unpkg.com/xrpl@2.2.1/build/xrpl-latest-min.js'></script>
 	<script>
-	const account = sessionStorage.getItem('account');
+	const account = "rfxPkmEfgZR9xxzDwTzr5exheyWrtKGiUy";
 	const crateContents = sessionStorage.getItem('crateContents')
 	if (typeof module !== "undefined") var xrpl = require('xrpl')
 	async function getTokens() {
@@ -132,36 +132,53 @@
 	}
 	if (winner[1] == 2){
 	document.getElementById("uncommon").style.display = "block"
+	document.getElementById("keys").style.display = "none"
+	document.getElementById("modal").style.display = "none"
+	document.getElementById("uncommon").play
 	document.getElementById('uncommon').addEventListener('ended',uncommonIdle,false);
 	}
 	if (winner[1] == 3){
 	document.getElementById("rare").style.display = "block"
+	document.getElementById("keys").style.display = "none"
+	document.getElementById("modal").style.display = "none"
+	document.getElementById("rare").play
 	document.getElementById('rare').addEventListener('ended',rareIdle,false);
 	}
 	if (winner[1] == 4){
+	document.getElementById("epic").style.display = "block"
+	document.getElementById("keys").style.display = "none"
+	document.getElementById("modal").style.display = "none"
 	document.getElementById("epic").style.display = "block"
 	document.getElementById('epic').addEventListener('ended',epicIdle,false);
 	}
 	}
     function commonIdle(e) {
 	document.getElementById("item").style.display = "block"
+	document.getElementById("item").src = "LootCrateData/CommonLootCrate/common-outfit-text.png"
 	document.getElementById("common").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
-	document.getElementById("loop2").src = "common-outfit-idle.mp4"
+	document.getElementById("loop2").src = "LootCrateVids/OpeningCrates/Common/common-outfit-idle.mp4"
 	document.getElementById("loop2").play();
-	document.getElementById("mintButton").style.display = "block"
 	}
 	function uncommonIdle(e) {
+	document.getElementById("item").style.display = "block"
+	document.getElementById("item").src = "LootCrateData/CommonLootCrate/uncommon-outfit-text.png"
+	document.getElementById("uncommon").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
-	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Uncommon/Loot_Crate_Uncommon_IDLE.mp4"
+	document.getElementById("loop2").src = "LootCrateVids/OpeningCrates/Uncommon/uncommon-outfit-idle.mp4"
+	document.getElementById("loop2").play();
 	}
 	function rareIdle(e) {
+	document.getElementById("item").style.display = "block"
+	document.getElementById("item").src = "LootCrateData/CommonLootCrate/rare-outfit-text.png"
+	document.getElementById("rare").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
-	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Rare/Loot_Crate_Rare_IDLE.mp4"
+	document.getElementById("loop2").src = "LootCrateVids/OpeningCrates/Rare/rare-outfit-idle.mp4"
+	document.getElementById("loop2").play();
 	}
 	function epicIdle(e) {
 	document.getElementById("loop2").style.display = "block"
-	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Epic/Loot_Crate_Epic_IDLE.mp4"
+	document.getElementById("loop2").src = "LootCrateVids/OpeningCrates/Common/common-outfit-idle.mp4"
 	}
     
 	</script>

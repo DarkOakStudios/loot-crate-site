@@ -108,36 +108,8 @@
 [type=radio]+img, [type=checkbox]+img {
 	cursor: pointer;
 }
-#loop2 {
+#loop2, #common, #uncommon, #rare, #noneselected, #dropcrate {
   position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-}
-#common {
-  position: relative;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-}
-#dropcrate {
-  position: relative;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-}
-#uncommon {
-  position: relative;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-}
-#noneselected {
-  position: relative;
   right: 0;
   bottom: 0;
   min-width: 100%;
