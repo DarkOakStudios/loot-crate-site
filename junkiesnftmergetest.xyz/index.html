@@ -1,0 +1,71 @@
+<html>
+<link rel= "stylesheet" type= "text/css" href= "posts_styles.css">
+<head>
+	<meta charset="utf-8">
+	<img src="qt=q_95.webp">
+        <style>
+            body {
+            background-color:#161616;
+        	color:white;
+        	text-align:center;
+            }
+        </style>
+    </head>
+	<body>
+	<br><br><br><br>
+	<h1>Sign in using Xumm!</h1>
+	<image id="logoStart" onmouseover="javascript:startVideo()" style="display: block; position: absolute; right: 25%; top: 40%" src="junction-xumm.png">
+	</image>
+	<a onmouseover="javascript:startVideo()" href="javascript:go()" style="height: 150px; width: 230px; diplay: none;" id="signIn">
+	<image style="display: none; height:150px; width: 200px; position: absolute; right: 25%; top: 40%" src="logo.png" id="signInButton">
+	</image>
+	<image onmouseout="javascript:endVideo()" id="logoEnter" style="display: none; position: absolute; right: 25%; top: 40%" src="junction-xumm.png">
+	</image>
+	<image id="logoExit" style="display: none; height: 25%; width: auto; position: absolute; right: 25%; top: 40%" src="junction-xumm.png">
+	</image>
+	</body>
+	<script src="https://xumm.app/assets/cdn/xumm-oauth2-pkce.min.js"></script>
+
+	<script>
+	  var sdk = null
+      var auth = new XummPkce('cb7567e9-98e1-420f-aa92-7885685301c0')
+
+      auth.on('result', event => {
+        console.log('Results are in, mobile flow, emulate auth trigger')
+        go()
+      })
+	  function go() {
+
+        return auth
+          .authorize()
+          .then(authorized => {
+			sdk = authorized.sdk
+            console.log('Authorized', /* authorized.jwt, */ authorized.me)
+
+            sessionStorage.setItem("account", authorized.me.account);
+
+            sdk.ping().then(pong => console.log({pong}))
+		window.location.href = "nft_home.html"
+          })
+          .catch(e => {
+            console.log('Auth error', e)
+
+
+
+            document.getElementById('error').style.display = 'block'
+            document.getElementById('error').innerText = e.message
+          })
+      }
+	  function startVideo(){
+	  document.getElementById("logoEnter").currentTime = 0
+	  document.getElementById("logoEnter").style.display = "block"
+	  document.getElementById("logoStart").style.display = "none"
+	  document.getElementById("logoExit").style.display = "none"
+	  }
+	  function endVideo(){
+	  document.getElementById("logoExit").currentTime = 0
+	  document.getElementById("logoExit").style.display = "block"
+	  document.getElementById("logoEnter").style.display = "none"
+	  }
+    </script>
+</html>

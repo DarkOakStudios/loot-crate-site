@@ -1,0 +1,168 @@
+<html>
+<link rel= "stylesheet" type= "text/css" href= "posts_styles.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<head>
+	<meta charset="utf-8">
+        <style>
+            body {
+            background-color:#161616;
+        	color:white;
+        	text-align:center;
+            }
+        </style>
+    </head>
+	<body onload="javascript:getTokens()">
+	<div id="container"></div>
+	<image id="item" src="LootCrateData/CommonLootCrate/common-outfit-text.png" style="position: absolute; top: 35%; right:70%;display:none; height:300px; width: auto"</image>
+	<video id="dropcrate" autoplay muted style="display:block">
+		<source src="/LootCrateVids/SelectCrate/Common/Common_Select_Animation.mp4" type="video/mp4">
+		</video>
+		<video id="common" style="display:none">
+		<source src="LootCrateVids/OpeningCrates/Common/common-outfit-case-opening.mp4" type="video/mp4">
+		</video>
+		<video id="uncommon" autoplay muted style="display:none">
+		<source src="/LootCrateVids/OpeningCrates/Uncommon/Loot_Crate_Uncommon_Animation.mp4" type="video/mp4">
+		</video>
+		<video id="rare" autoplay muted style="display:none">
+		<source src="/LootCrateVids/OutfitReveal/common-outfit-case-opening.mp4" type="video/mp4">
+		</video>
+		<video id="epic" autoplay muted style="display:none">
+		<source src="" type="video/mp4">
+		</video>
+		<video id="loop2" loop style="display:none">
+		<source src="" type="video/mp4">
+		</video>
+	<a href="javascript:receiveContents()" class="blockchainwhite" style="position: absolute; right: 46%; top: 70%; display: none">Open Crate</a>
+	<button id="modal" style="font-size:50px; position: absolute; right: 46%; top: 5%;" onclick="document.getElementById('keys').style.display='block'"
+	class="w3-button">Keys</button>
+	<div id="keys" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+				<div class="w3-container">
+					<span onclick="document.getElementById('keys').style.display='none'"
+					class="w3-button w3-display-topright">&times;</span>
+				<div id="container0" style="color:black">Keys</div>	
+				<button style="font-size:50px" style="position: absolute; right: 46%; top: 70%;" onclick="javascript:checkKeys()"
+	class="w3-button">Open Crate</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script src='https://unpkg.com/xrpl@2.2.1/build/xrpl-latest-min.js'></script>
+	<script>
+	const account = sessionStorage.getItem('account');
+	const crateContents = sessionStorage.getItem('crateContents')
+	if (typeof module !== "undefined") var xrpl = require('xrpl')
+	async function getTokens() {
+		const client = new xrpl.Client("wss://xls20-sandbox.rippletest.net:51233")
+		await client.connect()
+		const nfts = await client.request({
+			method: "account_nfts",
+			account: account
+		})
+		var account_nfts = nfts.result.account_nfts
+		var nftList = []
+		var nftTaxons = []
+		var nftIdList = []
+		for (let i = 0; i < account_nfts.length; i++){
+		var text = "https://ipfs.io/ipfs/"
+		var uri = xrpl.convertHexToString(account_nfts[i].URI)
+		var tokenid = account_nfts[i].NFTokenID
+		text += uri
+		nftList.push(text)
+		var nftid = [uri, tokenid]
+		nftIdList.push(nftid)
+		}
+		for (var i = 0; i < nftList.length; i++) {
+		var taxonString = (account_nfts[i].NFTokenTaxon).toString()
+		if (taxonString[0] == 4) {
+			if (taxonString[7] == 2) {
+			var keys = ""
+			if (taxonString[1] == 1){
+			keys += '<input type="checkbox" name="keys" id="commonkey" onclick="javascript:close()"/><label for="myCheckbox' + i + '"><img id="nft' + i + '" src="' + nftList[i] + '" style="height:200px; width:200px"></img></label>';
+			}
+			}
+		}
+		}
+		var container0 = document.getElementById("container0");
+		container0.innerHTML = keys;
+		container0.style.display = "block";
+		console.log(nfts)
+		client.disconnect()
+	}
+	function close(){
+	document.getElementById('keys').style.display= 'none'
+	}
+	async function weightedRandom(list) {
+    let maxWeight = 0;
+    for(let i = 0; i < list.length; i++) {
+        if(maxWeight < list[i].weight) {
+            maxWeight = list[i].weight;
+        }
+    }
+    let index = 0;
+    while (maxWeight > 0) {
+        index = Math.round(Math.random() * (list.length - 1));
+        maxWeight -= Math.random() * list[index].weight;  
+    }
+	return list[index].item
+	}
+	function checkKeys() {
+	var commonkey = document.getElementById("commonkey")
+	if(commonkey.checked){
+	receiveContents()
+	}
+	else{
+	window.alert("Please Select a Key!");
+	}
+	}
+	async function receiveContents() {
+	close()
+	var rawWinner = await weightedRandom(JSON.parse(crateContents))
+	var winner = JSON.stringify(rawWinner)
+//	console.log(winner[1])
+//	document.getElementById("container").innerHTML = '<h1>' + winner + '</h1>'
+	document.getElementById("dropcrate").style.display = "none"
+	if (winner[1] == 1){
+	document.getElementById("common").style.display = "block"
+	document.getElementById("keys").style.display = "none"
+	document.getElementById("modal").style.display = "none"
+	document.getElementById("common").play()
+	document.getElementById('common').addEventListener('ended',commonIdle,false);
+	}
+	if (winner[1] == 2){
+	document.getElementById("uncommon").style.display = "block"
+	document.getElementById('uncommon').addEventListener('ended',uncommonIdle,false);
+	}
+	if (winner[1] == 3){
+	document.getElementById("rare").style.display = "block"
+	document.getElementById('rare').addEventListener('ended',rareIdle,false);
+	}
+	if (winner[1] == 4){
+	document.getElementById("epic").style.display = "block"
+	document.getElementById('epic').addEventListener('ended',epicIdle,false);
+	}
+	}
+    function commonIdle(e) {
+	document.getElementById("item").style.display = "block"
+	document.getElementById("common").style.display = "none"
+	document.getElementById("loop2").style.display = "block"
+	document.getElementById("loop2").src = "common-outfit-idle.mp4"
+	document.getElementById("loop2").play();
+	document.getElementById("mintButton").style.display = "block"
+	}
+	function uncommonIdle(e) {
+	document.getElementById("loop2").style.display = "block"
+	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Uncommon/Loot_Crate_Uncommon_IDLE.mp4"
+	}
+	function rareIdle(e) {
+	document.getElementById("loop2").style.display = "block"
+	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Rare/Loot_Crate_Rare_IDLE.mp4"
+	}
+	function epicIdle(e) {
+	document.getElementById("loop2").style.display = "block"
+	document.getElementById("loop2").src = "/LootCrateVids/OpeningCrates/Epic/Loot_Crate_Epic_IDLE.mp4"
+	}
+    
+	</script>
+</html>

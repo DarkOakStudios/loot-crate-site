@@ -1,0 +1,138 @@
+<html>
+<link rel= "stylesheet" type= "text/css" href= "posts_styles.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<head>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {
+            background-color:#161616;
+        	color:white;
+        	text-align:center;
+            }
+        </style>
+    </head>
+    <body id="body" onload="javascript:getTokens()">
+	<video id="noneselected" autoplay muted style="display:block">
+		<source src="/LootCrateVids/SelectCrate/NoneSelected.mp4" type="video/mp4">
+		</video>
+		<video id="common" autoplay muted style="display:none">
+		<source src="/LootCrateVids/SelectCrate/Common/Common_Select_Animation.mp4" type="video/mp4">
+		</video>
+		<video id="uncommon" autoplay muted style="display:none">
+		<source src="/LootCrateVids/SelectCrate/Uncommon/Uncommon_Select_Animation.mp4" type="video/mp4">
+		</video>
+                        <div id="container0" style="position: absolute; top: 5%; right: 40%; display: none;">Crates</div>
+			<a href="javascript:checkKeys()" class="blockchainwhite" style="position: absolute; right: 45%; top: 40%">Open Loot Crate</a>
+		<script src='https://unpkg.com/xrpl@2.2.1/build/xrpl-latest-min.js'></script>
+		<script>
+		const account = sessionStorage.getItem('account');
+		async function getTokens() {
+		const client = new xrpl.Client("wss://xls20-sandbox.rippletest.net:51233")
+		await client.connect()
+		const nfts = await client.request({
+			method: "account_nfts",
+			account: account
+		})
+		var account_nfts = nfts.result.account_nfts
+		var nftList = []
+		var nftTaxons = []
+		var nftIdList = []
+		for (let i = 0; i < account_nfts.length; i++){
+		var text = "https://ipfs.io/ipfs/"
+		var uri = xrpl.convertHexToString(account_nfts[i].URI)
+		var tokenid = account_nfts[i].NFTokenID
+		text += uri
+		nftList.push(text)
+		var nftid = [uri, tokenid]
+		nftIdList.push(nftid)
+		}
+		var crates = "<h1>Crates</h1><form action=''>";
+		var end = "</form>"
+		for (var i = 0; i < nftList.length; i++) {
+		var taxonString = (account_nfts[i].NFTokenTaxon).toString()
+		if (taxonString[0] == 4) {
+			if (taxonString[7] == 1) {
+			var crateimageurl = ""
+			var contentsurl = ""
+			if (taxonString[1] == 1){
+			crateimageurl += nftList[i] + "/CommonLootCrate.png"
+			contentsurl += nftList[i] + "/Common_List.txt"
+			crates += '<input type="radio" name="crates" style="position: absolute; opacity: 0; width: 150px; height: 150px;" onmouseover="javascript:grow()" onmouseout="javascript:shrink()" alt="' + contentsurl + '" alt2="' + taxonString + '" id="commoncrate" onclick="change()"/><label for="myCheckbox' + i + '"><img id="commonpic" src="' + crateimageurl + '" style="height:200px; width:200px"></img></label></input>';
+			}
+			if (taxonString[1] == 2){
+			crateimageurl += nftList[i] + "/UncommonLootCrate.png"
+			contentsurl += nftList[i] + "/Uncommon_List.txt"
+			crates += '<input type="radio" name="crates" style="position: absolute; opacity: 0; width: 150px; height: 150px;" alt="' + contentsurl + '" alt2="' + taxonString + '" id="uncommoncrate" onclick="change()"/><label for="myCheckbox' + i + '"><img id="uncommonpic" src="' + crateimageurl + '" style="height:200px; width:200px"></img></label>';
+			}
+			if (taxonString[1] == 3){
+			crateimageurl += nftList[i] + "/RareLootCrate.png"
+			contentsurl += nftList[i] + "/Rare_List.txt"
+			crates += '<input type="radio" name="crates" alt="' + contentsurl + '" alt2="' + taxonString + '" id="rarecrate" onclick="change()"/><label for="myCheckbox' + i + '"><img id="nft' + i + '" src="' + crateimageurl + '" style="height:200px; width:200px"></img></label>';
+			}
+			if (taxonString[1] == 4){
+			crateimageurl += nftList[i] + "/EpicLootCrate.png"
+			contentsurl += nftList[i] + "/Epic_List.txt"
+			crates += '<input type="radio" name="crates" alt="' + contentsurl + '" alt2="' + taxonString + '" id="epiccrate" onclick="change()"/><label for="myCheckbox' + i + '"><img id="nft' + i + '" src="' + crateimageurl + '" style="height:200px; width:200px"></img></label>';
+			}
+			}
+		}
+		}
+		var container0 = document.getElementById("container0");
+		container0.innerHTML = crates + end;
+		container0.style.display = "block";
+		console.log(nfts)
+		client.disconnect()
+	}
+	function change(){
+	var commoncrate = document.getElementById("commoncrate")
+	var uncommoncrate = document.getElementById("uncommoncrate")
+	if(commoncrate.checked){
+	var commonvid = document.getElementById("common")
+	commonvid.pause();
+	commonvid.currentTime = 0;
+	commonvid.load();
+	commonvid.style.display = "block"
+	document.getElementById("uncommon").style.display = "none"
+	document.getElementById("noneselected").style.display = "none"
+	}
+	if(uncommoncrate.checked){
+	var uncommonvid = document.getElementById("uncommon")
+	uncommonvid.pause();
+	uncommonvid.currentTime = 0;
+	uncommonvid.load();
+	uncommonvid.style.display = "block"
+	document.getElementById("common").style.display = "none"
+	document.getElementById("noneselected").style.display = "none"
+	}
+	}
+	async function weightedRandom(list) {
+    let maxWeight = 0;
+    for(let i = 0; i < list.length; i++) {
+        if(maxWeight < list[i].weight) {
+            maxWeight = list[i].weight;
+        }
+    }
+    let index = 0;
+    while (maxWeight > 0) {
+        index = Math.round(Math.random() * (list.length - 1));
+        maxWeight -= Math.random() * list[index].weight;  
+    }
+	return list[index].item
+	}
+	async function checkKeys(){
+	var checked = document.querySelectorAll('input[type="radio"]:checked')
+	var contenturl = document.getElementById(checked[0].id)
+	console.log(contenturl)
+	var crateContents = await fetch(contenturl.getAttribute("alt")).then($ => $.text())
+	var taxon = contenturl.getAttribute("alt2")
+	sessionStorage.setItem("crateContents", crateContents)
+	if (taxon[1] == 1){
+	window.location.href = "common_crate.html";
+	}
+	if (taxon[1] == 2){
+	window.location.href = "uncommon_crate.html";
+	}
+	}
+	</script>
+</body>
+</html>

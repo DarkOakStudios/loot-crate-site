@@ -1,0 +1,3 @@
+C:\Users\derek\OneDrive\Desktop\Junkies NFT Test\obj\Debug\Junkies NFT Test.njsproj.AssemblyReference.cache
+C:\Users\derek\OneDrive\Desktop\Junkies NFT Test\obj\Debug\Junkies NFT Test.njsproj.CoreCompileInputs.cache
+C:\Users\derek\OneDrive\Desktop\Junkies NFT Test\bin\Microsoft.NodejsTools.WebRole.dll

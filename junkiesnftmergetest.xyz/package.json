@@ -1,0 +1,9 @@
+{
+  "name": "junkies-nft-test",
+  "version": "0.0.0",
+  "description": "Junkies NFT Test",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  }
+}

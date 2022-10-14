@@ -1,0 +1,40 @@
+<html>
+<link rel= "stylesheet" type= "text/css" href= "posts_styles.css">
+<head>
+	<meta charset="utf-8">
+	<img src="qt=q_95.webp">
+	<h1 id="header"></h1>
+        <style>
+            body {
+            background-color:#161616;
+        	color:white;
+        	text-align:center;
+            }
+        </style>
+    </head>
+	<body onload="javascript:welcome()">
+	<a href="javascript:tocrates()" style="position: absolute; right: 40%; top: 25%">
+	<image id="button1" onmouseover="javascript:grow()" onmouseout="javascript:shrink()" src="open-crate-button.png" style="height: 200px; width: auto;"></image>
+	</body>
+	<script>
+	const account = sessionStorage.getItem('account');
+	function welcome(){
+	document.getElementById("header").innerHTML = "Welcome " + account;
+	}
+	function grow(){
+	document.getElementById("button1").src = "crate-open.png";
+	}
+	function shrink(){
+	document.getElementById("button1").src = "open-crate-button.png";	
+	}
+	function tocrates(){
+	window.location.href = "open_crate.html";
+	}
+	function tosee(){
+	window.location.href = "see_nfts.html";
+	}
+	function toaccount(){
+	window.location.href = "see_account.html";
+	}
+	</script>
+</html>
