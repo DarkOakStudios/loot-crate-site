@@ -1,2 +1,1 @@
-Site located at junkiesnftmergetest.xyz
- 
+Site located [HERE](junkiesnftmergetest.xyz)
