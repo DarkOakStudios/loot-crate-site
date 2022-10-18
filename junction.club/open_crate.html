@@ -141,17 +141,19 @@
     }
 	return list[index].item
 	}
-	function checkKeys(){
+	async function checkKeys(){
 	var checked = document.querySelectorAll('input[type="radio"]:checked')
 	if (checked.length == 0){
 	window.alert("Please Select a Crate!");
 	return;
 	}
 	var contenturl = document.getElementById(checked[0].id)
-	console.log(contenturl)
-	var crateContents = fetch(contenturl.getAttribute("alt")).then($ => $.text())
 	var taxon = contenturl.getAttribute("alt2")
+	console.log(contenturl)
+	if (taxon[1] == 1){
+	var crateContents = await fetch(contenturl.getAttribute("alt")).then($ => $.text())
 	sessionStorage.setItem("crateContents", crateContents)
+	}
 	if (taxon[1] == 1){
 	window.location.href = "common_crate.html";
 	}
