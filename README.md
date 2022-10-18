@@ -1,2 +1,2 @@
-Site located at [HERE](junction.club)
+Site located [HERE](junction.club)
  
