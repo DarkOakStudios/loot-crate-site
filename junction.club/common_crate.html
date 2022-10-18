@@ -33,8 +33,9 @@
 		</video>
 	<image id="item" src="" style="position: absolute; top: 35%; right:70%;display:none; height:300px; width: auto"</image>
 	<a href="javascript:receiveContents()" class="blockchainwhite" style="position: absolute; right: 46%; top: 70%; display: none">Open Crate</a>
-	<button id="modal" style="font-size:50px; position: absolute; right: 46%; top: 5%;" onclick="document.getElementById('keys').style.display='block'"
+	<button id="modal" style="font-size:50px; position: absolute; right: 45%; top: 5%;" onclick="document.getElementById('keys').style.display='block'"
 	class="w3-button">Keys</button>
+	<a href="javascript:sendItem()" class="blockchainwhite" id="sendItem" style="position: absolute; right: 20%; top: 35%; display: none">Send to Wallet!</a>
 	<div id="keys" class="w3-modal">
 			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
 				<div class="w3-container">
@@ -93,6 +94,9 @@
 	function close(){
 	document.getElementById('keys').style.display= 'none'
 	}
+	function sendItem(){
+	window.location.href = "item_sent.html";
+	}
 	async function weightedRandom(list) {
     let maxWeight = 0;
     for(let i = 0; i < list.length; i++) {
@@ -134,7 +138,7 @@
 	document.getElementById("uncommon").style.display = "block"
 	document.getElementById("keys").style.display = "none"
 	document.getElementById("modal").style.display = "none"
-	document.getElementById("uncommon").play
+	document.getElementById("uncommon").play()
 	document.getElementById('uncommon').addEventListener('ended',uncommonIdle,false);
 	}
 	if (winner[1] == 3){
@@ -154,6 +158,7 @@
 	}
     function commonIdle(e) {
 	document.getElementById("item").style.display = "block"
+	document.getElementById("sendItem").style.display = "block"
 	document.getElementById("item").src = "LootCrateData/CommonLootCrate/common-outfit-text.png"
 	document.getElementById("common").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
@@ -162,6 +167,7 @@
 	}
 	function uncommonIdle(e) {
 	document.getElementById("item").style.display = "block"
+	document.getElementById("sendItem").style.display = "block"
 	document.getElementById("item").src = "LootCrateData/CommonLootCrate/uncommon-outfit-text.png"
 	document.getElementById("uncommon").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
@@ -170,6 +176,7 @@
 	}
 	function rareIdle(e) {
 	document.getElementById("item").style.display = "block"
+	document.getElementById("sendItem").style.display = "block"
 	document.getElementById("item").src = "LootCrateData/CommonLootCrate/rare-outfit-text.png"
 	document.getElementById("rare").style.display = "none"
 	document.getElementById("loop2").style.display = "block"
